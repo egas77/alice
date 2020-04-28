@@ -123,7 +123,7 @@ def handle_dialog(req, res):
                     "Не буду.",
                     "Отстань!",
                 ],
-                'animal_index': 0
+                'animal_index': sessionStorage[user_id]['animal_index'] + 1
             }
             animal = animals[sessionStorage[user_id]['animal_index']]
             parse = morph.parse(animal)[0]
