@@ -36,7 +36,6 @@ animals = [
     'слон',
     'кролик'
 ]
-animal_index = 0
 
 morph = pymorphy2.MorphAnalyzer()
 
@@ -71,7 +70,6 @@ def main():
 
 
 def handle_dialog(req, res):
-    global animal_index
     user_id = req['session']['user_id']
 
     if req['session']['new']:
@@ -84,10 +82,11 @@ def handle_dialog(req, res):
                 "Не хочу.",
                 "Не буду.",
                 "Отстань!",
-            ]
+            ],
+            'animal_index': 0
         }
         # Заполняем текст ответа
-        animal = animals[animal_index]
+        animal = animals[sessionStorage[user_id]['animal_index']]
         parse = morph.parse(animal)[0]
         word = parse.inflect({'sing', 'gent'}).word
         res['response']['text'] = f'Привет! Купи {word}!'
@@ -108,12 +107,12 @@ def handle_dialog(req, res):
                                                                                    'покупаю',
                                                                                    'хорошо'])):
         # Пользователь согласился, прощаемся.
-        animal = animals[animal_index]
+        animal = animals[sessionStorage[user_id]['animal_index']]
         parse = morph.parse(animal)[0]
         word = parse.inflect({'sing', 'gent'}).word
         res['response']['text'] = f'{word} можно найти на Яндекс.Маркете!'.capitalize()
-        animal_index += 1
-        if animal_index >= len(animals):
+        sessionStorage[user_id]['animal_index'] += 1
+        if sessionStorage[user_id]['animal_index'] >= len(animals):
             res['response']['end_session'] = True
             animal_index = 0
             return
@@ -125,14 +124,14 @@ def handle_dialog(req, res):
                     "Отстань!",
                 ]
             }
-            animal = animals[animal_index]
+            animal = animals[sessionStorage[user_id]['animal_index']]
             parse = morph.parse(animal)[0]
             word = parse.inflect({'sing', 'gent'}).word
             res['response']['text'] += f'\nА теперь купи {word}!'
             res['response']['buttons'] = get_suggests(user_id)
     else:
         # Если нет, то убеждаем его купить слона!
-        animal = animals[animal_index]
+        animal = animals[sessionStorage[user_id]['animal_index']]
         parse = morph.parse(animal)[0]
         word = parse.inflect({'sing', 'gent'}).word
         res['response']['text'] = \
@@ -157,7 +156,7 @@ def get_suggests(user_id):
     # Если осталась только одна подсказка, предлагаем подсказку
     # со ссылкой на Яндекс.Маркет.
     if len(suggests) < 2:
-        animal = animals[animal_index]
+        animal = animals[sessionStorage[user_id]['animal_index']]
         suggests.append({
             "title": "Ладно",
             "url": f"https://market.yandex.ru/search?text={animal}",
