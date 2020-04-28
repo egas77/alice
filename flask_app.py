@@ -114,7 +114,7 @@ def handle_dialog(req, res):
         sessionStorage[user_id]['animal_index'] += 1
         if sessionStorage[user_id]['animal_index'] >= len(animals):
             res['response']['end_session'] = True
-            animal_index = 0
+            sessionStorage[user_id]['animal_index'] = 0
             return
         else:
             sessionStorage[user_id] = {
