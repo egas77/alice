@@ -1,6 +1,10 @@
 click==7.1.2
+DAWG-Python==0.7.2
+docopt==0.6.2
 Flask==1.1.2
 itsdangerous==1.1.0
 Jinja2==2.11.2
 MarkupSafe==1.1.1
+pymorphy2==0.8
+pymorphy2-dicts==2.4.393442.3710985
 Werkzeug==1.0.1
