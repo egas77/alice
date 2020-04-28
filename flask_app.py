@@ -122,7 +122,8 @@ def handle_dialog(req, res):
                     "Не хочу.",
                     "Не буду.",
                     "Отстань!",
-                ]
+                ],
+                'animal_index': 0
             }
             animal = animals[sessionStorage[user_id]['animal_index']]
             parse = morph.parse(animal)[0]
