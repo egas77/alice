@@ -127,7 +127,7 @@ def handle_dialog(req, res):
             animal = animals[animal_index]
             parse = morph.parse(animal)[0]
             word = parse.inflect({'sing', 'gent'}).word
-            res['response']['text'] = f'Привет! Купи {word}!'
+            res['response']['text'] += f'\nА теперь купи {word}!'
             res['response']['buttons'] = get_suggests(user_id)
     else:
         # Если нет, то убеждаем его купить слона!
